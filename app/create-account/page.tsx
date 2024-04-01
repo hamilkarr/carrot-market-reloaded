@@ -16,13 +16,13 @@ export default function CreateAccount() {
             </div>
             <form action={dispatch} className="flex flex-col gap-3">
                 <FormInput
-                    name="Username"
+                    name="username"
                     type="text"
                     placeholder="Username"
                     required
                 />
                 <FormInput
-                    name="Email"
+                    name="email"
                     type="email"
                     placeholder="Email"
                     required
