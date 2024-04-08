@@ -12,6 +12,10 @@ const checkPasswords = ({
     confirm_password: string;
 }) => password === confirm_password;
 
+const passwordRegex = new RegExp(
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).+$/
+);
+
 const formSchema = z
     .object({
         username: z
@@ -21,9 +25,14 @@ const formSchema = z
             })
             .min(3, 'Way too short!!!')
             .max(10, "That's too loooooong!!")
+            .toLowerCase()
+            .trim()
             .refine(checkUserName, 'No potatoes allowed!'),
-        email: z.string().email(),
-        password: z.string().min(10),
+        email: z.string().email().toLowerCase(),
+        password: z
+            .string()
+            .min(10)
+            .regex(passwordRegex, 'Password is too weak'),
         confirm_password: z.string().min(10),
     })
     .refine(checkPasswords, {
@@ -41,5 +50,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     const result = formSchema.safeParse(data);
     if (!result.success) {
         return result.error.flatten();
+    } else {
+        console.log(result.data);
     }
 }
