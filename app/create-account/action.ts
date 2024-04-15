@@ -27,6 +27,7 @@ const formSchema = z
             .max(10, "That's too loooooong!!")
             .toLowerCase()
             .trim()
+            .transform((username) => `🔥 ${username}`)
             .refine(checkUserName, 'No potatoes allowed!'),
         email: z.string().email().toLowerCase(),
         password: z
